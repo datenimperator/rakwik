@@ -9,11 +9,13 @@ web statistics software. It's easy to integrate into rack-based applications and
 frontend Javascript inclusion.}
   gem.summary       = %q{Rack-based server-side asynchronous Piwik tracker integration.}
   gem.homepage      = "https://github.com/datenimperator/rakwik"
+  gem.licenses      = ["MIT"]
 
   gem.add_dependency "rack"
   gem.add_dependency "em-http-request"
 
   gem.add_development_dependency "rspec"
+  gem.add_development_dependency "rack-test"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
