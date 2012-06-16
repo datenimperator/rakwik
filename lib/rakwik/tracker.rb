@@ -7,14 +7,13 @@ module Rakwik
 
   	def initialize(app, options = {})
       @app, @options = app, DEFAULT.merge(options)
-      missing = [:piwik_url, :site_id].detect{ |e| @options[e].nil? }
+      missing = [:piwik_url, :site_id, :token_auth].detect{ |e| @options[e].nil? }
       raise "Missing config value: :#{missing}" if missing
   	end
 
     def call(env)
-      request = Rack::Request.new(env)
       status, headers, response = @app.call(env)
-      track(request)
+      track Rack::Request.new(env)
       [status, headers, response]
     end
 
@@ -28,19 +27,25 @@ module Rakwik
       @options[:site_id]
     end
 
+    def token_auth
+      @options[:token_auth]
+    end
+
     def track(request)
       header = {
         'User-Agent' => request.user_agent,
-        'Accept-Encoding' => request.env['HTTP_ACCEPT_ENCODING']
+        'Accept-Language' => request.env["HTTP_ACCEPT_LANGUAGE"]
       }
       data = {
-        'idsite' => piwik_id,
-        'rec' => 1,
-        'url' => request.url,
-        'apiv' => 1
+        'idsite'     => piwik_id,
+        'token_auth' => token_auth,
+        'rec'        => 1,
+        'url'        => request.url,
+        'cip'        => request.ip,
+        'apiv'       => 1
       }
       data['urlref'] = request.referer unless request.referer.nil?
-      EM.schedule do
+      EventMachine.schedule do
         http = connection(piwik_url).get :head => header, :query => data
       end
     end

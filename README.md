@@ -1,14 +1,14 @@
 # Rakwik
 
-Server-side integration of web tracking methods does not require Javascript snippets
+*Server-side* integration of web tracking methods does not require Javascript snippets
 or tracking images to be includd in the actual frontend. Rakwik implements asynchronous
 tracking, so it tries to keep the time low, needed to count a particular request.
 
 Unlike client-side tracking, server-side tracking can be used independently of frontend
 encryption. Your application requires SSL encryption, but your installation of Piwik
 does not support it? That's what Rakwik ist built for: It can track a request using http
-while the original request came in over https, without the browser having to warn about
-mixed content.
+while the original request came in over https, without the browser having to warn the
+user about mixed content.
 
 ## Pros and cons
 
@@ -39,8 +39,13 @@ Rakwik comes as a Rack-compatible middleware which needs to be added to your app
 middleware stack on startup.
 
     config.middleware.use Rakwik::Tracker,
-        :piwik_url => 'http://your.piwik.host/piwik.php',
-        :site_id   => 'your_site_id' # eg. 1
+        :piwik_url  => 'http://your.piwik.host/piwik.php',
+        :site_id    => 'your_site_id', # eg. 1
+        :token_auth => 'yoursecrettoken'
+
+The `:token_auth` is needed since Rakwik will tell Piwik to record hits from another IP
+than its own. The token_auth must be either the Super User token_auth, or a user with
+"admin" permission for this website ID.
 
 ## Reference
 
