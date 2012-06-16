@@ -20,4 +20,5 @@ frontend Javascript inclusion.}
   gem.name          = "rakwik"
   gem.require_paths = ["lib"]
   gem.version       = Rakwik::VERSION
+  gem.platform      = Gem::Platform::RUBY
 end

@@ -1,6 +1,14 @@
 # Rakwik
 
-TODO: Write a gem description
+Server-side integration of web tracking methods does not require Javascript snippets
+or tracking images to be includd in the actual frontend. Rakwik implements asynchronous
+tracking, so it tries to keep the time low, needed to count a particular request.
+
+Unlike client-side tracking, server-side tracking can be used independently of frontend
+encryption. Your application requires SSL encryption, but your installation of Piwik
+does not support it? That's what Rakwik ist built for: It can track a request using http
+while the original request came in over https, without the browser having to warn about
+mixed content.
 
 ## Installation
 
@@ -18,7 +26,8 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Rakwik comes as a Rack-compatible middleware which needs to be added to your application's
+middleware stack on startup.
 
 ## Contributing
 
