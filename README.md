@@ -10,6 +10,15 @@ does not support it? That's what Rakwik ist built for: It can track a request us
 while the original request came in over https, without the browser having to warn about
 mixed content.
 
+## Pros and cons
+
+Using server-side tracking, you can track all kinds of information that are visible to
+your server. Most certainly the URL, IP address and referrer are used, also session
+information to identify subsequent requests from the same client.
+
+However, it's hard to track client-specific information like screen resolution and plugin
+support since the server has no way to detect details like such.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -28,6 +37,14 @@ Or install it yourself as:
 
 Rakwik comes as a Rack-compatible middleware which needs to be added to your application's
 middleware stack on startup.
+
+    config.middleware.use Rakwik::Tracker,
+        :piwik_url => 'http://your.piwik.host/piwik.php',
+        :site_id   => 'your_site_id' # eg. 1
+
+## Reference
+
+*  http://piwik.org/docs/tracking-api/reference/
 
 ## Contributing
 

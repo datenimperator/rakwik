@@ -11,6 +11,7 @@ frontend Javascript inclusion.}
   gem.homepage      = "https://github.com/datenimperator/rakwik"
 
   gem.add_dependency "rack"
+  gem.add_dependency "em-http-request"
 
   gem.add_development_dependency "rspec"
 
