@@ -5,11 +5,11 @@ module Rakwik
   class Tracker
     DEFAULT = {}
 
-  	def initialize(app, options = {})
+    def initialize(app, options = {})
       @app, @options = app, DEFAULT.merge(options)
       missing = [:piwik_url, :site_id, :token_auth].detect{ |e| @options[e].nil? }
       raise "Missing config value: :#{missing}" if missing
-  	end
+    end
 
     def call(env)
       status, headers, response = @app.call(env)
