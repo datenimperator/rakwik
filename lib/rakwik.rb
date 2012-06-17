@@ -29,6 +29,11 @@ module Rakwik
       # Thin is built on EventMachine, doesn't need this thread
     end
   end
+
+  def self.die_gracefully_on_signal
+    Signal.trap("INT")  { EM.stop }
+    Signal.trap("TERM") { EM.stop }
+  end
 end
 
 Rakwik.start
