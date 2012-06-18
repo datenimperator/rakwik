@@ -4,6 +4,8 @@
 or tracking images to be includd in the actual frontend. Rakwik implements asynchronous
 tracking, so it tries to keep the time low, needed to count a particular request.
 
+![Server-side tracking](https://github.com/datenimperator/rakwik/wiki/server-side_tracking.png)
+
 Unlike client-side tracking, server-side tracking can be used independently of frontend
 encryption. Your application requires SSL encryption, but your installation of Piwik
 does not support it? That's what Rakwik ist built for: It can track a request using http
