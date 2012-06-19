@@ -49,6 +49,13 @@ The `:token_auth` is needed since Rakwik will tell Piwik to record hits from ano
 than its own. The token_auth must be either the Super User token_auth, or a user with
 "admin" permission for this website ID.
 
+## TODO
+
+*  Handle tracking cookies
+*  Implement a helper to set the action title from the controller or view
+*  Implement a way to detect client capabilities without a separate request
+*  Detect [Warden](/hassox/warden) based credentials, eg. from [Devise](/plataformatec/devise)
+
 ## Reference
 
 *  http://piwik.org/docs/tracking-api/reference/
