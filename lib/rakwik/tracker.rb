@@ -3,6 +3,9 @@ require 'pp'
 
 module Rakwik
   class Tracker
+  
+    include Rack::Response::Helpers
+    
     DEFAULT = {}
 
     def initialize(app, options = {})
@@ -12,9 +15,9 @@ module Rakwik
     end
 
     def call(env)
-      status, headers, response = @app.call(env)
-      track Rack::Request.new(env)
-      [status, headers, response]
+      @status, @headers, @body = @app.call(env)
+      track Rack::Request.new(env) if ok?
+      [@status, @headers, @body]
     end
 
     private
