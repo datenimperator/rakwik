@@ -56,6 +56,7 @@ than its own. The token_auth must be either the Super User token_auth, or a user
 *  Implement a way to provide custom variables from the controller or view
 *  Implement a way to detect client capabilities without a separate request
 *  Detect [Warden](/hassox/warden) based credentials, eg. from [Devise](/plataformatec/devise)
+*  ~~Track 404 responses~~
 *  Implement meaningful specs
 
 ## Reference
