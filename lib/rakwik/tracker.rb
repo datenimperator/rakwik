@@ -43,8 +43,8 @@ module Rakwik
       header = {
         'User-Agent' => request.user_agent
       }
-      header['Accept-Language'] = request.env["HTTP_ACCEPT_LANGUAGE"] unless request.env["HTTP_ACCEPT_LANGUAGE"].nil?
-      header['DNT'] = request.env["HTTP_DNT"] unless request.env["HTTP_DNT"].nil?
+      header['Accept-Language'] = request.env['HTTP_ACCEPT_LANGUAGE'] unless request.env['HTTP_ACCEPT_LANGUAGE'].nil?
+      header['DNT'] = request.env['HTTP_DNT'] unless request.env['HTTP_DNT'].nil?
       data = {
         'idsite'     => piwik_id,
         'token_auth' => token_auth,
@@ -54,6 +54,7 @@ module Rakwik
         'rand'       => rand(1000000),
         'apiv'       => 1
       }
+      data['action_name'] = request.env['rakwik.action_name'] unless request.env['rakwik.action_name'].nil?
       data['urlref'] = request.referer unless request.referer.nil?
       
       if not_found? && @options[:track_404] === true
