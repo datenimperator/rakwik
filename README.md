@@ -49,17 +49,6 @@ The `:token_auth` is needed since Rakwik will tell Piwik to record hits from ano
 than its own. The token_auth must be either the Super User token_auth, or a user with
 "admin" permission for this website ID.
 
-<<<<<<< HEAD
-## TODO
-
-*  ~~Handle tracking cookies~~ no way to do this asynchronously
-*  Implement a helper to set the action title from the controller or view
-*  Implement a way to provide custom variables from the controller or view
-*  Implement a way to detect client capabilities without a separate request
-*  Detect [Warden](/hassox/warden) based credentials, eg. from [Devise](/plataformatec/devise)
-*  ~~Track 404 responses~~
-*  Implement meaningful specs
-=======
 ### Action names
 
 Piwik allows to set a custom action name which will be used in reports instead of the original
@@ -88,7 +77,16 @@ In the particular controller activate it by using the `action_name` class method
     end
     
 Currently, `action_name` points to a instance variable.
->>>>>>> Support action names
+
+## TODO
+
+*  ~~Handle tracking cookies~~ no way to do this asynchronously
+*  Implement a helper to set the action title ~~from the controller~~ or view
+*  Implement a way to provide custom variables from the controller or view
+*  Implement a way to detect client capabilities without a separate request
+*  Detect [Warden](/hassox/warden) based credentials, eg. from [Devise](/plataformatec/devise)
+*  ~~Track 404 responses~~
+*  Implement meaningful specs
 
 ## Reference
 
