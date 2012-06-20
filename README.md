@@ -2,7 +2,7 @@
 
 *Server-side* integration of web tracking methods does not require Javascript snippets
 or tracking images to be includd in the actual frontend. Rakwik implements asynchronous
-tracking, so it tries to keep the time low, needed to count a particular request.
+tracking, so it tries to keep the time low that is needed to count a particular request.
 
 ![Server-side tracking](https://github.com/datenimperator/rakwik/wiki/server-side_tracking.png)
 
@@ -51,10 +51,12 @@ than its own. The token_auth must be either the Super User token_auth, or a user
 
 ## TODO
 
-*  Handle tracking cookies
+*  ~~Handle tracking cookies~~ no way to do this asynchronously
 *  Implement a helper to set the action title from the controller or view
+*  Implement a way to provide custom variables from the controller or view
 *  Implement a way to detect client capabilities without a separate request
 *  Detect [Warden](/hassox/warden) based credentials, eg. from [Devise](/plataformatec/devise)
+*  Implement meaningful specs
 
 ## Reference
 
