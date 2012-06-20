@@ -25,7 +25,9 @@ support since the server has no way to detect details like such.
 
 Add this line to your application's Gemfile:
 
-    gem 'rakwik'
+``` ruby
+gem 'rakwik'
+```
 
 And then execute:
 
@@ -40,10 +42,12 @@ Or install it yourself as:
 Rakwik comes as a Rack-compatible middleware which needs to be added to your application's
 middleware stack on startup.
 
-    config.middleware.use Rakwik::Tracker,
-        :piwik_url  => 'http://your.piwik.host/piwik.php',
-        :site_id    => 'your_site_id', # eg. 1
-        :token_auth => 'yoursecrettoken'
+``` ruby
+config.middleware.use Rakwik::Tracker,
+    :piwik_url  => 'http://your.piwik.host/piwik.php',
+    :site_id    => 'your_site_id', # eg. 1
+    :token_auth => 'yoursecrettoken'
+```
 
 The `:token_auth` is needed since Rakwik will tell Piwik to record hits from another IP
 than its own. The token_auth must be either the Super User token_auth, or a user with
@@ -54,28 +58,32 @@ than its own. The token_auth must be either the Super User token_auth, or a user
 Piwik allows to set a custom action name which will be used in reports instead of the original
 URL. To use it from your Rails application, include it into your controller like such:
 
-    require 'rakwik/helpers'
+``` ruby
+require 'rakwik/helpers'
 
-    class ApplicationController < ActionController::Base
-      # ...
-      include Rakwik::Helpers
-    end
+class ApplicationController < ActionController::Base
+  # ...
+  include Rakwik::Helpers
+end
+```
 
 In the particular controller activate it by using the `action_name` class method:
 
-    class BooksController < ApplicationController
-      action_name :page_title
-      
-      # GET /books
-      # GET /books.xml
-      def index
-        @books = Book.all
-        @page_title = "Books"
-    
-        respond_with @books
-      end
-    end
-    
+``` ruby
+class BooksController < ApplicationController
+  action_name :page_title
+  
+  # GET /books
+  # GET /books.xml
+  def index
+    @books = Book.all
+    @page_title = "Books"
+
+    respond_with @books
+  end
+end
+```
+
 Currently, `action_name` points to a instance variable.
 
 ## TODO
