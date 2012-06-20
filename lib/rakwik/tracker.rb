@@ -57,7 +57,7 @@ module Rakwik
       data['urlref'] = request.referer unless request.referer.nil?
       
       if not_found? && @options[:track_404] === true
-        data['action_name'] = "404/URL = #{data['url']}/FROM= #{data['urlref']}"
+        data['action_name'] = "404/URL = #{data['url'].gsub(/\//, '%2f')}/From = #{data['urlref'].gsub(/\//, '%2f')}"
       end
       
       [header, data]
