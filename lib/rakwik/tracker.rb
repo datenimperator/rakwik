@@ -45,6 +45,15 @@ module Rakwik
       }
       header['Accept-Language'] = request.env['HTTP_ACCEPT_LANGUAGE'] unless request.env['HTTP_ACCEPT_LANGUAGE'].nil?
       header['DNT'] = request.env['HTTP_DNT'] unless request.env['HTTP_DNT'].nil?
+
+      if c=request.cookies
+        # we'll forward piwik cookies only
+        c.delete_if{ |name, value| !(name =~ /^_pk_id\.|^_pk_ses\./) }
+        unless c.empty?
+          header['Cookie'] = c.map{|k,v| "#{k}=#{v}"}.join(';')
+        end
+      end
+
       data = {
         'idsite'     => piwik_id,
         'token_auth' => token_auth,
