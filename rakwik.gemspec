@@ -3,7 +3,7 @@ require File.expand_path('../lib/rakwik/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Christian Aust"]
-  gem.email         = ["github@kontakt.software-consultant.net"]
+  gem.email         = ["git@kontakt.software-consultant.net"]
   gem.description   = %q{Rakwik is a server-side tracker integration for the Piwik opensource
 web statistics software. It's easy to integrate into rack-based applications and does not require
 frontend Javascript inclusion.}
