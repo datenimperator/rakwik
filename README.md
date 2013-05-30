@@ -1,5 +1,7 @@
 # Rakwik
 
+[![Build Status](https://travis-ci.org/datenimperator/rakwik.png)](https://travis-ci.org/datenimperator/rakwik)
+
 *Server-side* integration of web tracking methods does not require Javascript snippets
 or tracking images to be includd in the actual frontend. Rakwik implements asynchronous
 tracking, so it tries to keep the time low that is needed to count a particular request.
