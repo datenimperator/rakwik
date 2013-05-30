@@ -2,9 +2,11 @@ require 'em-http'
 
 module Rakwik
   class Tracker
-  
+
     include Rack::Response::Helpers
-    
+
+    attr_accessor :status
+
     DEFAULT = {
       :track_404 => true
     }
@@ -16,13 +18,15 @@ module Rakwik
     end
 
     def call(env)
+      start = Time.now
       @status, @headers, @body = @app.call(env)
+      env['rakwik.duration'] = (Time.now - start)*1000
       track Rack::Request.new(env) if track?
       [@status, @headers, @body]
     end
 
     private
-    
+
     def track?
       ok? || (not_found? && @options[:track_404] === true)
     end
@@ -38,10 +42,10 @@ module Rakwik
     def token_auth
       @options[:token_auth]
     end
-    
+
     def extract(request)
       header = {
-        'User-Agent' => request.user_agent
+        'User-Agent' => (request.user_agent || "Rakwik Tracker #{Rakwik::VERSION}")
       }
       header['Accept-Language'] = request.env['HTTP_ACCEPT_LANGUAGE'] unless request.env['HTTP_ACCEPT_LANGUAGE'].nil?
       header['DNT'] = request.env['HTTP_DNT'] unless request.env['HTTP_DNT'].nil?
@@ -61,22 +65,25 @@ module Rakwik
         'url'        => request.url,
         'cip'        => request.ip,
         'rand'       => rand(1000000),
-        'apiv'       => 1
+        'apiv'       => 1,
+        'gt_ms'      => request.env['rakwik.duration'],
+        'ua'         => request.user_agent
       }
       data['action_name'] = request.env['rakwik.action_name'] unless request.env['rakwik.action_name'].nil?
       data['urlref'] = request.referer unless request.referer.nil?
-      
+      data['gt_ms'] = request.env['rakwik.duration']
+
       if not_found? && @options[:track_404] === true
         data['action_name'] = "404/URL = #{data['url'].gsub(/\//, '%2f')}/From = #{data['urlref'].gsub(/\//, '%2f')}"
       end
-      
+
       [header, data]
     end
 
     def track(request)
       h, d = extract(request)
       EventMachine.schedule do
-        http = connection(piwik_url).get :head => h, :query => d
+        http = connection(piwik_url).post :head => h, :body => d
         http.errback {
           time = Time.now.strftime("%Y-%m-%d %H:%M:%S")
           request.env['rack.errors'].puts "[#{time}] ERROR Rakwik::Tracker: #{http.error}"
