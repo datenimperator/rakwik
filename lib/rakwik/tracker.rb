@@ -48,6 +48,16 @@ module Rakwik
       @options[:token_auth]
     end
 
+    def path
+      @options[:path] || ""
+    end
+
+    def match_path?(url)
+      return path.call(url) if path.is_a? Proc
+      return url =~ path    if path.is_a? Regexp
+      return url.start_with?(path.to_s)
+    end
+
     def extract(request)
       header = {
         'User-Agent' => (request.user_agent || self.class.user_agent)
@@ -93,6 +103,8 @@ module Rakwik
     end
 
     def track(request)
+      return unless match_path?(request.path)
+
       h, d = extract(request)
       EventMachine.schedule do
         http = connection(piwik_url).post :head => h, :body => d

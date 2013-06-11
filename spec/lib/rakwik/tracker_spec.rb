@@ -103,4 +103,108 @@ describe Rakwik::Tracker do
     end
   end
 
+  context 'with path option' do
+    let(:app) {
+      Rakwik::Tracker.new(
+        lambda { |env| [200, {"Content-Type"=>"text/plain"}, ["Hello."]] },
+        tracker_data
+      )
+    }
+
+    let(:tracker_data) {
+      {
+        :piwik_url => 'http://example.com/piwik.php',
+        :site_id => 1,
+        :token_auth => 'foobar',
+        :path => path
+      }
+    }
+
+    context 'as regexp' do
+      let(:path) { /^\/foo.*$/ }
+
+      it 'should track foo* pathes' do
+        get '/foo'
+        sleep 0.01
+
+        get '/foo/bar'
+        sleep 0.01
+
+        get '/foobar'
+        sleep 0.01
+
+        expect(WebMock).to have_requested(:post, tracker_data[:piwik_url]).times(3)
+      end
+
+      it 'should not track other pathes' do
+        get '/fo'
+        sleep 0.01
+
+        get '/index'
+        sleep 0.01
+
+        get '/bar/foo'
+        sleep 0.01
+
+        expect(WebMock).to have_requested(:post, tracker_data[:piwik_url]).times(0)
+      end
+    end
+
+    context 'as proc' do
+      let(:path) { Proc.new { |path| path.length == 5 }}
+
+      it 'should track pathes of length 5' do
+        get '/foos'
+        sleep 0.01
+
+        get '/a/bc'
+        sleep 0.01
+
+        expect(WebMock).to have_requested(:post, tracker_data[:piwik_url]).times(2)
+      end
+
+      it 'should not track other pathes' do
+        get '/fo'
+        sleep 0.01
+
+        get '/index'
+        sleep 0.01
+
+        get '/bar/foo'
+        sleep 0.01
+
+        expect(WebMock).to have_requested(:post, tracker_data[:piwik_url]).times(0)
+      end
+    end
+
+    context 'as string' do
+      let(:path) { "/api" }
+
+      it 'should track pathes that start with given string' do
+        get '/api/v2/users'
+        sleep 0.01
+
+        get '/api'
+        sleep 0.01
+
+        get '/api/v2/users.json'
+        sleep 0.01
+
+        expect(WebMock).to have_requested(:post, tracker_data[:piwik_url]).times(3)
+      end
+
+      it 'should not track other pathes' do
+        get '/'
+        sleep 0.01
+
+        get '/users.html'
+        sleep 0.01
+
+        get '/downloads/session.json'
+        sleep 0.01
+
+        expect(WebMock).to have_requested(:post, tracker_data[:piwik_url]).times(0)
+      end
+    end
+  end
 end
