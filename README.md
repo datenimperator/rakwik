@@ -88,15 +88,19 @@ end
 
 Currently, `action_name` points to a instance variable.
 
+## Warden integration
+
+Since version 0.4.0 Rakwik detects [Warden](/hassox/warden) based credentials, eg. from [Devise](/plataformatec/devise). It'll create a MD5 hash of the current user instance to reliably identify subsequent requests of the same user.
+
 ## TODO
 
 *  ~~Handle tracking cookies~~ no way to do this asynchronously
 *  Implement a helper to set the action title ~~from the controller~~ or view
 *  Implement a way to provide custom variables from the controller or view
 *  Implement a way to detect client capabilities without a separate request
-*  Detect [Warden](/hassox/warden) based credentials, eg. from [Devise](/plataformatec/devise)
+*  ~~Detect [Warden](/hassox/warden) based credentials, eg. from [Devise](/plataformatec/devise)~~
 *  ~~Track 404 responses~~
-*  Implement meaningful specs
+*  ~~Implement meaningful specs~~
 
 ## Reference
 
