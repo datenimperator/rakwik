@@ -74,7 +74,9 @@ module Rakwik
       data['gt_ms'] = request.env['rakwik.duration']
 
       if not_found? && @options[:track_404] === true
-        data['action_name'] = "404/URL = #{data['url'].gsub(/\//, '%2f')}/From = #{data['urlref'].gsub(/\//, '%2f')}"
+        data['action_name'] = "404"
+        data['action_name'] += "/URL = #{data['url'].gsub(/\//, '%2f')}" if data['url']
+        data['action_name'] += "/From = #{data['urlref'].gsub(/\//, '%2f')}" if data['urlref']
       end
 
       [header, data]
