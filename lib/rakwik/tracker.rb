@@ -1,4 +1,5 @@
 require 'em-http'
+require 'digest/md5'
 
 module Rakwik
   class Tracker
@@ -67,11 +68,16 @@ module Rakwik
         'rand'       => rand(1000000),
         'apiv'       => 1,
         'gt_ms'      => request.env['rakwik.duration'],
-        'ua'         => request.user_agent
+        'ua'         => request.user_agent,
+        'lang'       => header['Accept-Language']
       }
       data['action_name'] = request.env['rakwik.action_name'] unless request.env['rakwik.action_name'].nil?
       data['urlref'] = request.referer unless request.referer.nil?
       data['gt_ms'] = request.env['rakwik.duration']
+
+      if w = request.env['warden']
+        data['_id'] = Digest::MD5.hexdigest w.user
+      end
 
       if not_found? && @options[:track_404] === true
         data['action_name'] = "404"
