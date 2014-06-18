@@ -1,4 +1,5 @@
-require "rakwik/tracker"
+require 'rakwik/version'
+require 'rakwik/tracker'
 
 module Rakwik
   # Taken from http://www.hiringthing.com/2011/11/04/eventmachine-with-rails.html

@@ -55,6 +55,25 @@ describe Rakwik::Tracker do
       posted_data["rand"].should_not be_nil
       posted_data["gt_ms"].should_not be_nil
     end
+
+    it "accepts requests without user agent" do
+        # Trigger a request to our inner app that should be tracked
+        get '/'
+
+        # wait a little while to let EventMachine send the request
+        sleep 0.01
+
+        # What now?
+        headers = nil
+        WebMock.should have_requested(:post, tracker_data[:piwik_url]).with{|req|
+          headers = req.headers
+        }
+
+        headers.should include(
+          "User-Agent"=>Rakwik::Tracker.user_agent
+        )
+    end
+
   end
 
   context "for Warden authenticated requests" do

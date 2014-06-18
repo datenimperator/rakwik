@@ -26,6 +26,10 @@ module Rakwik
       [@status, @headers, @body]
     end
 
+    def self.user_agent
+      "Rakwik Tracker #{Rakwik::VERSION}"
+    end
+
     private
 
     def track?
@@ -46,7 +50,7 @@ module Rakwik
 
     def extract(request)
       header = {
-        'User-Agent' => (request.user_agent || "Rakwik Tracker #{Rakwik::VERSION}")
+        'User-Agent' => (request.user_agent || self.class.user_agent)
       }
       header['Accept-Language'] = request.env['HTTP_ACCEPT_LANGUAGE'] unless request.env['HTTP_ACCEPT_LANGUAGE'].nil?
       header['DNT'] = request.env['HTTP_DNT'] unless request.env['HTTP_DNT'].nil?
