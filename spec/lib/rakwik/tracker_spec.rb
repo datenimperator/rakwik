@@ -37,11 +37,11 @@ describe Rakwik::Tracker do
 
       # What now?
       posted_data = nil
-      WebMock.should have_requested(:post, tracker_data[:piwik_url]).with{|req|
+      expect(WebMock).to have_requested(:post, tracker_data[:piwik_url]).with{|req|
         posted_data = URI::decode_www_form(req.body).
           inject(Hash.new){ |h, raw| h[raw[0]] = raw[1]; h }
       }
-      posted_data.should include(
+      expect(posted_data).to include(
         "token_auth"=>"foobar",
         "idsite"=>"1",
         "rec"=>"1",
@@ -52,8 +52,8 @@ describe Rakwik::Tracker do
         "lang"=>"en",
         "urlref"=>"http://example.org/referring_page"
       )
-      posted_data["rand"].should_not be_nil
-      posted_data["gt_ms"].should_not be_nil
+      expect(posted_data["rand"]).not_to be_nil
+      expect(posted_data["gt_ms"]).not_to be_nil
     end
 
     it "accepts requests without user agent" do
@@ -61,15 +61,15 @@ describe Rakwik::Tracker do
         get '/'
 
         # wait a little while to let EventMachine send the request
-        sleep 0.01
+        sleep 0.1
 
         # What now?
         headers = nil
-        WebMock.should have_requested(:post, tracker_data[:piwik_url]).with{|req|
+        expect(WebMock).to have_requested(:post, tracker_data[:piwik_url]).with{|req|
           headers = req.headers
         }
 
-        headers.should include(
+        expect(headers).to include(
           "User-Agent"=>Rakwik::Tracker.user_agent
         )
     end
@@ -89,17 +89,17 @@ describe Rakwik::Tracker do
       get '/'
 
       # wait a little while to let EventMachine send the request
-      sleep 0.01
+      sleep 0.1
 
       # What now?
       posted_data = nil
-      WebMock.should have_requested(:post, tracker_data[:piwik_url]).with{|req|
+      expect(WebMock).to have_requested(:post, tracker_data[:piwik_url]).with{|req|
         posted_data = URI::decode_www_form(req.body).
           inject(Hash.new){ |h, raw| h[raw[0]] = raw[1]; h }
       }
 
-      posted_data["_id"].should_not be_nil
-      posted_data["_id"].should match(/[0-9a-f]{16}/)
+      expect(posted_data["_id"]).not_to be_nil
+      expect(posted_data["_id"]).to match(/[0-9a-f]{16}/)
     end
   end
 
